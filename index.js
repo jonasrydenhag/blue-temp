@@ -1,9 +1,10 @@
 "use strict";
 
+var config = require('./config.json');
 var debug = require('debug')('blueTemp');
 var noble = require('noble');
 
-var peripheralId = 'id';
+var peripheralId = config.peripheralId;
 var serviceUUID = '181a';
 var tempCharacteristicUUID = '2a6e';
 
