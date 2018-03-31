@@ -1,0 +1,9 @@
+{
+  "name": "blue-temp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "debug": "^2.6.8",
+    "noble": "^1.9.0"
+  }
+}
