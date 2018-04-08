@@ -7,60 +7,30 @@ var Promise = require('promise');
 var sensor = require('./lib/sensor');
 var storage = require('./lib/storage');
 
-function read () {
-  return new Promise(function (resolve, reject) {
-    sensor.read()
-      .then(function (temperature) {
-        resolve({
-          "temperature": temperature
-        });
-      })
-      .catch(function (ex) {
-        reject(ex);
-      });
-
-  });
-}
-
 function readAndStore () {
   return new Promise(function (resolve, reject) {
-    read()
+    sensor.read()
       .then(function (tempHum) {
-        storeTempHum(tempHum)
+        storage.store(tempHum)
           .then(function () {
             resolve(tempHum);
           })
-          .catch(function (ex) {
-            reject(ex);
-          });
+          .catch(reject);
       })
-      .catch(function (ex) {
-        reject(ex);
-      });
-  });
-}
-
-function storeTempHum (tempHum) {
-  return new Promise(function (resolve, reject) {
-    storage.store(tempHum)
-      .then(function () {
-        resolve();
-      })
-      .catch(function (ex) {
-        reject(ex);
-      });
+      .catch(reject);
   });
 }
 
 (function(){
-  module.exports.read = read;
+  module.exports.read = sensor.read;
   module.exports.readAndStore = readAndStore;
 
   if (module.parent === null) {
     readAndStore()
       .then(function (tempHum) {
         debug(tempHum);
-        console.log('Temperature: ' + tempHum.temperature.toFixed(1) + '°C');
+        console.log('Temperature: ' + tempHum.temperature.toFixed(1) + '°C, ' +
+          'Humidity: ' + tempHum.humidity.toFixed(1) + '%');
 
         process.exit();
       })
