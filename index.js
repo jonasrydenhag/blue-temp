@@ -23,7 +23,8 @@ function readAndStore () {
 
 (function(){
   module.exports.batteryLevel = sensor.battery;
-  module.exports.read = readAndStore;
+  module.exports.read = sensor.read;
+  module.exports.readAndStore = readAndStore;
 
   if (module.parent === null) {
     readAndStore()
